@@ -66,36 +66,43 @@ public class UserPrinciple implements UserDetails {
         return email;
     }
 
+    // trả về username đã dùng trong qúa trình xác thực
     @Override
     public String getUsername() {
         return username;
     }
 
+    //trả về password đã dùng trong qúa trình xác thực
     @Override
     public String getPassword() {
         return password;
     }
 
+    //trả về danh sách các quyền của người dùng
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
+    // trả về true nếu tài khoản của người dùng chưa hết hạn
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    //trả về true nếu người dùng chưa bị khóa
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    // trả về true nếu chứng thực (mật khẩu) của người dùng chưa hết hạn
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    //trả về true nếu người dùng đã được kích hoạt
     @Override
     public boolean isEnabled() {
         return true;
