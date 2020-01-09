@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,5 +34,11 @@ public class OderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(oder, HttpStatus.OK);
+    }
+
+    @PostMapping("/oder")
+    public ResponseEntity<?> createOder(@Valid @RequestBody Oder oder){
+        oderService.save(oder);
+        return new ResponseEntity<>(oder, HttpStatus.CREATED);
     }
 }
