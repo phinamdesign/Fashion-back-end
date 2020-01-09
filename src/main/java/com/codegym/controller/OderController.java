@@ -54,4 +54,14 @@ public class OderController {
         oderService.save(oder1.get());
         return new ResponseEntity<>(oder1, HttpStatus.OK);
     }
+
+    @DeleteMapping("/oder/{id}")
+    public ResponseEntity<?> deleteOder(@PathVariable Long id){
+        Optional<Oder> oder = oderService.findById(id);
+        if (!oder.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        oderService.delete(id);
+        return new ResponseEntity<>(oder, HttpStatus.OK);
+    }
 }
