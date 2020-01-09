@@ -1,5 +1,6 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +37,16 @@ public class User {
     @Size(max = 50)
     @Email
     private String email;
+
+    private Long phoneNumber;
+
+    private String address;
+
+    private String avatar;
+
+//    @JsonIgnore
+//    @OneToMany(targetEntity = Comment.class , mappedBy = "user" , cascade = CascadeType.ALL)
+//    private List<Comment> comments;
 
     @NotBlank
     @Size(min=6, max = 100)
