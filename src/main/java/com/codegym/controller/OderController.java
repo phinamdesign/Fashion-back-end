@@ -41,4 +41,17 @@ public class OderController {
         oderService.save(oder);
         return new ResponseEntity<>(oder, HttpStatus.CREATED);
     }
+
+    @PutMapping("oder/{id}")
+    public ResponseEntity<?> updateOder(@Valid @RequestBody Oder oder, @PathVariable Long id){
+        Optional<Oder> oder1 = oderService.findById(id);
+        if(!oder1.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        oder1.get().setDeliveryTime(oder.getDeliveryTime());
+        oder1.get().setDeliveryAddress(oder.getDeliveryAddress());
+
+        oderService.save(oder1.get());
+        return new ResponseEntity<>(oder1, HttpStatus.OK);
+    }
 }
