@@ -1,6 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.model.Product;
+import com.codegym.search.SearchByName;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,5 +67,23 @@ public class ProductController {
         }
         productService.delete(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @PostMapping("/search-by-name")
+    public ResponseEntity<?> searchByName(@RequestBody SearchByName searchByName){
+        if (searchByName.getName() == "" || searchByName.getName() == null){
+            List<Product> tags = (List<Product>) productService.findAll();
+            if (tags.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        List<Product> products = (List<Product>) productService.findByName(searchByName.getName());
+        if (products.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }
     }
 }
