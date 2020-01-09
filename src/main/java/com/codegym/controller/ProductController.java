@@ -72,11 +72,11 @@ public class ProductController {
     @PostMapping("/search-by-name")
     public ResponseEntity<?> searchByName(@RequestBody SearchByName searchByName){
         if (searchByName.getName() == "" || searchByName.getName() == null){
-            List<Product> tags = (List<Product>) productService.findAll();
-            if (tags.isEmpty()){
+            List<Product> products = (List<Product>) productService.findAll();
+            if (products.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(products,HttpStatus.OK);
             }
         }
         List<Product> products = (List<Product>) productService.findByName(searchByName.getName());

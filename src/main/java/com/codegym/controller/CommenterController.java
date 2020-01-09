@@ -2,6 +2,7 @@ package com.codegym.controller;
 
 import com.codegym.model.Commenter;
 import com.codegym.model.Oder;
+import com.codegym.search.SearchByTitle;
 import com.codegym.service.CommenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,5 +66,21 @@ public class CommenterController {
         }
         commenterService.delete(id);
         return new ResponseEntity<>(commenter, HttpStatus.OK);
+    }
+
+    @PostMapping("/commenter/search-by-title")
+    public ResponseEntity<?> searchByTitle(@RequestBody SearchByTitle searchByTitle){
+        if (searchByTitle.getTitle() == "" || searchByTitle.getTitle() == null){
+            List<Commenter> commenters = (List<Commenter>) commenterService.findAll();
+            if (commenters.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(commenters, HttpStatus.OK);
+        }
+        List<Commenter> commenters = (List<Commenter>) commenterService.findByTitle(searchByTitle.getTitle());
+        if (commenters.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(commenters, HttpStatus.OK);
     }
 }
