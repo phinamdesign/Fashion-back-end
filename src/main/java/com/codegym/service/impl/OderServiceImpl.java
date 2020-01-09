@@ -4,9 +4,11 @@ import com.codegym.model.Oder;
 import com.codegym.repository.OderRepository;
 import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class OderServiceImpl implements OderService {
     @Autowired
     private OderRepository oderRepository;
