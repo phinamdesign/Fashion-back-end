@@ -56,14 +56,14 @@ public class CommenterController {
         commenterService.save(commenter1.get());
         return new ResponseEntity<>(commenter1, HttpStatus.OK);
     }
-//
-//    @DeleteMapping("/oder/{id}")
-//    public ResponseEntity<?> deleteOder(@PathVariable Long id){
-//        Optional<Oder> oder = oderService.findById(id);
-//        if (!oder.isPresent()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        oderService.delete(id);
-//        return new ResponseEntity<>(oder, HttpStatus.OK);
-//    }
+
+    @DeleteMapping("/commenter/{id}")
+    public ResponseEntity<?> deleteCommenter(@PathVariable Long id){
+        Optional<Commenter> commenter = commenterService.findById(id);
+        if (!commenter.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        commenterService.delete(id);
+        return new ResponseEntity<>(commenter, HttpStatus.OK);
+    }
 }
