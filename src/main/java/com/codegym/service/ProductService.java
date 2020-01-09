@@ -1,0 +1,18 @@
+package com.codegym.service;
+
+import com.codegym.model.Product;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+public interface ProductService {
+    Optional<Product> findById(Long id);
+
+    Iterable<Product> findAll();
+
+    Product save(Product product);
+
+    void delete(Long id);
+
+    Iterable<Product> findByName(String name);
+}
