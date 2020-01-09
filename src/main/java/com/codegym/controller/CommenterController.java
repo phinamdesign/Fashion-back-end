@@ -36,12 +36,12 @@ public class CommenterController {
         }
         return new ResponseEntity<>(commenter, HttpStatus.OK);
     }
-//
-//    @PostMapping("/oder")
-//    public ResponseEntity<?> createOder(@Valid @RequestBody Oder oder){
-//        oderService.save(oder);
-//        return new ResponseEntity<>(oder, HttpStatus.CREATED);
-//    }
+
+    @PostMapping("/commenter")
+    public ResponseEntity<?> createOder(@Valid @RequestBody Commenter commenter){
+        commenterService.save(commenter);
+        return new ResponseEntity<>(commenter, HttpStatus.CREATED);
+    }
 //
 //    @PutMapping("oder/{id}")
 //    public ResponseEntity<?> updateOder(@Valid @RequestBody Oder oder, @PathVariable Long id){
