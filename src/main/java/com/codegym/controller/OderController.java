@@ -5,12 +5,10 @@ import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,5 +24,14 @@ public class OderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(oders, HttpStatus.OK);
+    }
+
+    @GetMapping("/oder/{id}")
+    public ResponseEntity<?> getOder(@PathVariable Long id){
+        Optional<Oder> oder = oderService.findById(id);
+        if (!oder.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(oder, HttpStatus.OK);
     }
 }

@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table
@@ -8,13 +9,13 @@ public class Oder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String deliveryTime;
+    private Date deliveryTime;
     private String deliveryAddress;
 
     public Oder() {
     }
 
-    public Oder(Long id, String deliveryTime, String deliVeryAddress){
+    public Oder(Long id, Date deliveryTime, String deliVeryAddress){
         this.id = id;
         this.deliveryTime = deliveryTime;
         this.deliveryAddress = deliVeryAddress;
@@ -28,11 +29,11 @@ public class Oder {
         this.id = id;
     }
 
-    public String getDeliveryTime() {
+    public Date getDeliveryTime() {
         return deliveryTime;
     }
 
-    public void setDeliveryTime(String deliveryTime) {
+    public void setDeliveryTime(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 
