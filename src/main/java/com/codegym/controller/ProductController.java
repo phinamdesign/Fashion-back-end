@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/product")
-    public ResponseEntity<List<Product>> listProduct(){
+    public ResponseEntity<?> listProduct(){
         List<Product> products = (List<Product>) productService.findAll();
         if (products.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -33,5 +34,27 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @PostMapping("/product")
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Product product){
+        productService.save(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, @PathVariable Long id){
+        Optional<Product> product1 = productService.findById(id);
+        if (!product1.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        product1.get().setName(product.getName());
+        product1.get().setImage(product.getImage());
+        product1.get().setPrice(product.getPrice());
+        product1.get().setDescription(product.getDescription());
+        product1.get().setQuantity(product.getQuantity());
+        productService.save(product1.get());
+
+        return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 }
