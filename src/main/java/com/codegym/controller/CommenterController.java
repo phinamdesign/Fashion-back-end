@@ -38,23 +38,24 @@ public class CommenterController {
     }
 
     @PostMapping("/commenter")
-    public ResponseEntity<?> createOder(@Valid @RequestBody Commenter commenter){
+    public ResponseEntity<?> createCommenter(@Valid @RequestBody Commenter commenter){
         commenterService.save(commenter);
         return new ResponseEntity<>(commenter, HttpStatus.CREATED);
     }
-//
-//    @PutMapping("oder/{id}")
-//    public ResponseEntity<?> updateOder(@Valid @RequestBody Oder oder, @PathVariable Long id){
-//        Optional<Oder> oder1 = oderService.findById(id);
-//        if(!oder1.isPresent()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        oder1.get().setDeliveryTime(oder.getDeliveryTime());
-//        oder1.get().setDeliveryAddress(oder.getDeliveryAddress());
-//
-//        oderService.save(oder1.get());
-//        return new ResponseEntity<>(oder1, HttpStatus.OK);
-//    }
+
+    @PutMapping("commenter/{id}")
+    public ResponseEntity<?> updateCommenter(@Valid @RequestBody Commenter commenter, @PathVariable Long id){
+        Optional<Commenter> commenter1 = commenterService.findById(id);
+        if(!commenter1.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        commenter1.get().setTitle(commenter.getTitle());
+        commenter1.get().setContent(commenter.getContent());
+        commenter1.get().setTime(commenter.getTime());
+
+        commenterService.save(commenter1.get());
+        return new ResponseEntity<>(commenter1, HttpStatus.OK);
+    }
 //
 //    @DeleteMapping("/oder/{id}")
 //    public ResponseEntity<?> deleteOder(@PathVariable Long id){
