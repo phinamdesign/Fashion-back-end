@@ -3,7 +3,6 @@ package com.codegym.controller;
 import com.codegym.model.Category;
 import com.codegym.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +62,16 @@ public class CategoryController {
         }
         categoryService.removeCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search/category")
+    ResponseEntity<?> findCategory(@RequestParam("name") Optional<String> categoryName) {
+        Iterable<Category> categories;
+        if(categoryName.isPresent()){
+            categories = categoryService.findAllByCategoryName(categoryName.get());
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 }
