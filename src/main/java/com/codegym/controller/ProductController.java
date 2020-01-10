@@ -4,6 +4,8 @@ import com.codegym.model.Product;
 import com.codegym.search.SearchByName;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +22,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/product")
-    public ResponseEntity<?> listProduct(){
-        List<Product> products = (List<Product>) productService.findAll();
+    public ResponseEntity<?> listProduct(Pageable pageable){
+        Page<Product> products = productService.findAll(pageable);
         if (products.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -69,21 +71,21 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/search-by-name")
-    public ResponseEntity<?> searchByName(@RequestBody SearchByName searchByName){
-        if (searchByName.getName() == "" || searchByName.getName() == null){
-            List<Product> products = (List<Product>) productService.findAll();
-            if (products.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(products,HttpStatus.OK);
-            }
-        }
-        List<Product> products = (List<Product>) productService.findByName(searchByName.getName());
-        if (products.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        }
-    }
+//    @PostMapping("product/search-by-name")
+//    public ResponseEntity<?> searchByName(@RequestBody SearchByName searchByName){
+//        if (searchByName.getName() == "" || searchByName.getName() == null){
+//            List<Product> products = (List<Product>) productService.findAll();
+//            if (products.isEmpty()){
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            } else {
+//                return new ResponseEntity<>(products,HttpStatus.OK);
+//            }
+//        }
+//        List<Product> products = (List<Product>) productService.findByName(searchByName.getName());
+//        if (products.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(products, HttpStatus.OK);
+//        }
+//    }
 }
