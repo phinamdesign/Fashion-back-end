@@ -54,4 +54,14 @@ public class CategoryController {
         categoryService.saveCategory(currentCategory.get());
         return new ResponseEntity<>(currentCategory,HttpStatus.OK);
     }
+
+    @DeleteMapping("/category/{id}")
+    ResponseEntity<Void> deleteCategory(@PathVariable ("id") Long id, @RequestBody Category category){
+        Optional<Category> thisCategory = categoryService.findByCategoryId(id);
+        if(!thisCategory.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        categoryService.removeCategory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
