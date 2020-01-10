@@ -47,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByName(name, pageable);
     }
 
-//    @Override
-//    public Page<Product> findAll() {
-//        return productRepository.findAll(PageRequest.of(1, 5, Sort.by("name").descending()));
-//    }
+    @Override
+    public Page<Product> findAllById(Long id, Pageable pageable) {
+        return productRepository.findAllById(id, pageable);
+    }
 }

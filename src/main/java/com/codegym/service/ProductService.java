@@ -21,4 +21,6 @@ public interface ProductService {
     Page<Product> findAll(Pageable pageable);
 
     Page<Product> findAllByName(String name, Pageable pageable);
+
+    Page<Product> findAllById(Long id, Pageable pageable);
 }

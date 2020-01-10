@@ -6,12 +6,12 @@ import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -71,21 +71,25 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-//    @PostMapping("product/search-by-name")
-//    public ResponseEntity<?> searchByName(@RequestBody SearchByName searchByName){
-//        if (searchByName.getName() == "" || searchByName.getName() == null){
-//            List<Product> products = (List<Product>) productService.findAll();
-//            if (products.isEmpty()){
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            } else {
-//                return new ResponseEntity<>(products,HttpStatus.OK);
-//            }
-//        }
-//        List<Product> products = (List<Product>) productService.findByName(searchByName.getName());
-//        if (products.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping("product/search")
+    public ResponseEntity<?> searchByName(@RequestParam("name") Optional<String> name, Pageable pageable){
+        Page<Product> products;
+        if (name.isPresent()){
+            products = productService.findAllByName(name.get(), pageable);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+//    public ResponseEntity<?> searchById(@RequestBody Optional<Long> id, Pageable pageable){
+//        Page<Product> products;
+//        if (id.isPresent()){
+//            products = productService.findAllById(id.get(), pageable);
 //        } else {
-//            return new ResponseEntity<>(products, HttpStatus.OK);
+////            products = productService.findAll(pageable);
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
+//        return new ResponseEntity<>(products, HttpStatus.OK);
 //    }
 }
