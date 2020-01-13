@@ -52,6 +52,7 @@ public class OderDetailController {
         }
         oderDetail1.get().setPrice(oderDetail.getPrice());
         oderDetail1.get().setQuantity(oderDetail.getQuantity());
+        oderDetailService.save(oderDetail1.get());
         return new ResponseEntity<>(oderDetail1, HttpStatus.OK);
     }
 
