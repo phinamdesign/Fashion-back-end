@@ -11,7 +11,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     @NotBlank
-    @Size(min=3, max = 50)
+    @Size(min = 3, max = 50)
     private String categoryName;
 //
 //    @OneToMany(targetEntity = Product.class)
@@ -20,7 +20,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long categoryId, String categoryName){
+    public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
