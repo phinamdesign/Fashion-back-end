@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +22,9 @@ public class SupplierController {
 
     @GetMapping("/supplier")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Supplier>> getAllSupplier(){
+    public ResponseEntity<List<Supplier>> getAllSupplier() {
         List<Supplier> supplierList = supplierService.findAllSupplier();
-        if(supplierList.isEmpty()){
+        if (supplierList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(supplierList, HttpStatus.OK);
@@ -33,7 +32,7 @@ public class SupplierController {
 
     @PostMapping("/supplier")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier, UriComponentsBuilder ucBuilder){
+    ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier, UriComponentsBuilder ucBuilder) {
         supplierService.saveSupplier(supplier);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/admin/supplier/{id}").buildAndExpand(supplier.getSupplierId()).toUri());
@@ -42,9 +41,9 @@ public class SupplierController {
 
     @GetMapping("/supplier/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> getSupplier(@PathVariable ("id") Long id){
+    ResponseEntity<?> getSupplier(@PathVariable("id") Long id) {
         Optional<Supplier> supplier = supplierService.findSupplierById(id);
-        if(!supplier.isPresent()){
+        if (!supplier.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(supplier, HttpStatus.OK);
@@ -52,16 +51,28 @@ public class SupplierController {
 
     @PutMapping("/supplier/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> updateSupplier(@PathVariable ("id") Long id, @RequestBody Supplier supplier){
+    ResponseEntity<?> updateSupplier(@PathVariable("id") Long id, @RequestBody Supplier supplier) {
         Optional<Supplier> currentSupplier = supplierService.findSupplierById(id);
-        if(!currentSupplier.isPresent()){
+        if (!currentSupplier.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentSupplier.get().setSupplierName(supplier.getSupplierName());
         currentSupplier.get().setSupplierPhone(supplier.getSupplierPhone());
-        currentSupplier.get().setSupplierAddress(supplier.getSupplierAddress());;
+        currentSupplier.get().setSupplierAddress(supplier.getSupplierAddress());
+        ;
         supplierService.saveSupplier(currentSupplier.get());
         return new ResponseEntity<>(currentSupplier, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/supplier/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<?> removeSupplier(@PathVariable("id") Long id) {
+        Optional<Supplier> supplier = supplierService.findSupplierById(id);
+        if (!supplier.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        supplierService.removeSupplier(id);
+        return new ResponseEntity<Supplier>(HttpStatus.NO_CONTENT);
     }
 
 }
