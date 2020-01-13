@@ -15,18 +15,18 @@ public class Supplier {
     private Integer supplierPhone;
     @NotEmpty
     private String supplierAddress;
-    @OneToMany(targetEntity = Product.class)
-    private List<Product> productList;
+//    @OneToMany(targetEntity = Product.class)
+//    private List<Product> productList;
 
     public Supplier() {
     }
 
-    public Supplier(String supplierName, Integer supplierPhone, String supplierAddress, List<Product> productList){
-        this.supplierName = supplierName;
-        this.supplierPhone = supplierPhone;
-        this.supplierAddress = supplierAddress;
-        this.productList = productList;
-    }
+//    public Supplier(String supplierName, Integer supplierPhone, String supplierAddress, List<Product> productList){
+//        this.supplierName = supplierName;
+//        this.supplierPhone = supplierPhone;
+//        this.supplierAddress = supplierAddress;
+//        this.productList = productList;
+//    }
 
 
     public Long getSupplierId() {
@@ -61,11 +61,11 @@ public class Supplier {
         this.supplierAddress = supplierAddress;
     }
 
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
+//    public List<Product> getProductList() {
+//        return productList;
+//    }
+//
+//    public void setProductList(List<Product> productList) {
+//        this.productList = productList;
+//    }
 }
