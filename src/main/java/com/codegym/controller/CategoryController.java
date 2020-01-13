@@ -22,7 +22,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/category")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<Category>> getAllCategory() {
         List<Category> categoryList = (List<Category>) categoryService.findAllCategory();
         if (categoryList.isEmpty()) {
@@ -32,7 +32,7 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Category> createCategory(@RequestBody Category category, UriComponentsBuilder ucBuilder) {
         categoryService.saveCategory(category);
         HttpHeaders headers = new HttpHeaders();
@@ -41,7 +41,7 @@ public class CategoryController {
     }
 
     @GetMapping("/category/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> getCategory(@PathVariable ("id") Long id){
         Optional<Category> category = categoryService.findByCategoryId(id);
         if (!category.isPresent()) {
@@ -50,7 +50,7 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
     @PutMapping("/category/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> editCategory(@PathVariable ("id") Long id, @RequestBody Category category ){
         Optional<Category> currentCategory = categoryService.findByCategoryId(id);
         if(!currentCategory.isPresent()){
@@ -62,7 +62,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/category/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> deleteCategory(@PathVariable ("id") Long id){
         Optional<Category> thisCategory = categoryService.findByCategoryId(id);
         if(!thisCategory.isPresent()){
