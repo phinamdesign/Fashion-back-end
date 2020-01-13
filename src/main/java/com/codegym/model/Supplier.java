@@ -2,7 +2,6 @@ package com.codegym.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 public class Supplier {
@@ -12,7 +11,7 @@ public class Supplier {
     @NotEmpty
     private String supplierName;
     @NotEmpty
-    private Integer supplierPhone;
+    private String supplierPhone;
     @NotEmpty
     private String supplierAddress;
 //    @OneToMany(targetEntity = Product.class)
@@ -21,12 +20,11 @@ public class Supplier {
     public Supplier() {
     }
 
-//    public Supplier(String supplierName, Integer supplierPhone, String supplierAddress, List<Product> productList){
-//        this.supplierName = supplierName;
-//        this.supplierPhone = supplierPhone;
-//        this.supplierAddress = supplierAddress;
-//        this.productList = productList;
-//    }
+    public Supplier(String supplierName, String supplierPhone, String supplierAddress){
+        this.supplierName = supplierName;
+        this.supplierPhone = supplierPhone;
+        this.supplierAddress = supplierAddress;
+    }
 
 
     public Long getSupplierId() {
@@ -45,11 +43,11 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public Integer getSupplierPhone() {
+    public String getSupplierPhone() {
         return supplierPhone;
     }
 
-    public void setSupplierPhone(Integer supplierPhone) {
+    public void setSupplierPhone(String supplierPhone) {
         this.supplierPhone = supplierPhone;
     }
 

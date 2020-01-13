@@ -3,18 +3,19 @@ package com.codegym.controller;
 import com.codegym.model.Supplier;
 import com.codegym.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(maxAge = 3600)
 @RequestMapping("/api/admin")
 public class SupplierController {
     @Autowired
@@ -28,6 +29,25 @@ public class SupplierController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(supplierList, HttpStatus.OK);
+    }
+
+    @PostMapping("/supplier")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier, UriComponentsBuilder ucBuilder){
+        supplierService.saveSupplier(supplier);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/admin/supplier/{id}").buildAndExpand(supplier.getSupplierId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/supplier/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<?> getSupplier(@PathVariable ("id") Long id){
+        Optional<Supplier> supplier = supplierService.findSupplierById(id);
+        if(!supplier.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(supplier, HttpStatus.OK);
     }
 
 }
