@@ -2,6 +2,7 @@ package com.codegym.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -9,7 +10,9 @@ public class OderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private long price;
+    @NotNull
     private long quantity;
 
     public OderDetail() {
