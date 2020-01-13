@@ -50,4 +50,18 @@ public class SupplierController {
         return new ResponseEntity<>(supplier, HttpStatus.OK);
     }
 
+    @PutMapping("/supplier/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<?> updateSupplier(@PathVariable ("id") Long id, @RequestBody Supplier supplier){
+        Optional<Supplier> currentSupplier = supplierService.findSupplierById(id);
+        if(!currentSupplier.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        currentSupplier.get().setSupplierName(supplier.getSupplierName());
+        currentSupplier.get().setSupplierPhone(supplier.getSupplierPhone());
+        currentSupplier.get().setSupplierAddress(supplier.getSupplierAddress());;
+        supplierService.saveSupplier(currentSupplier.get());
+        return new ResponseEntity<>(currentSupplier, HttpStatus.OK);
+    }
+
 }
