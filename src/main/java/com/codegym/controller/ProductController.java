@@ -9,23 +9,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.peer.ListPeer;
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
     @GetMapping("/product")
     public ResponseEntity<?> listProduct(Pageable pageable){
-//        Page<Product> products = productService.findAll(pageable);
         List<Product> products = (List<Product>) productService.findAll();
         if (products.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -42,13 +41,15 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/product")
+    @PostMapping("/admin/product")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Product product){
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/admin/product/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, @PathVariable Long id){
         Optional<Product> product1 = productService.findById(id);
         if (!product1.isPresent()){
@@ -64,7 +65,8 @@ public class ProductController {
         return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/admin/product/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
         Optional<Product> product = productService.findById(id);
         if (!product.isPresent()){
