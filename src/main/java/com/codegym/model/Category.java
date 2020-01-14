@@ -13,9 +13,9 @@ public class Category {
     @NotBlank
     @Size(min = 3, max = 50)
     private String categoryName;
-//
-//    @OneToMany(targetEntity = Product.class)
-//    List<Product> products;
+
+    @OneToMany(targetEntity = Product.class)
+    private List<Product> products;
 
     public Category() {
     }
@@ -39,5 +39,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

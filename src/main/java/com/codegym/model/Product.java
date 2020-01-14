@@ -13,6 +13,14 @@ public class Product {
     private String description;
     private Long quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "supplierId")
+    private Supplier supplier;
+
     public Product() {
     }
 
@@ -71,5 +79,21 @@ public class Product {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }
