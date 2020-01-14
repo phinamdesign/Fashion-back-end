@@ -15,7 +15,7 @@ public class Oder {
     public Oder() {
     }
 
-    public Oder(Long id, Date deliveryTime, String deliVeryAddress){
+    public Oder(Long id, Date deliveryTime, String deliVeryAddress) {
         this.id = id;
         this.deliveryTime = deliveryTime;
         this.deliveryAddress = deliVeryAddress;

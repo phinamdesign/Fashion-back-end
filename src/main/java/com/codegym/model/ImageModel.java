@@ -2,10 +2,8 @@ package com.codegym.model;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name="image_model")
-
+@Table(name = "image_model")
 public class ImageModel {
     @Id
     @Column(name = "id")
