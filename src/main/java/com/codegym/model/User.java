@@ -43,9 +43,9 @@ public class User {
 
     private String avatar;
 
-//    @JsonIgnore
-//    @OneToMany(targetEntity = Comment.class , mappedBy = "user" , cascade = CascadeType.ALL)
-//    private List<Comment> comments;
+    @JsonIgnore
+    @OneToMany(targetEntity = Commenter.class)
+    private List<Commenter> comments;
 
     @NotBlank
     @Size(min=6, max = 100)

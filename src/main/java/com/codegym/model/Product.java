@@ -13,10 +13,18 @@ public class Product {
     private String description;
     private Long quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "supplierId")
+    private Supplier supplier;
+
     public Product() {
     }
 
-    public Product(Long id, String name, String image, Long price, String description, Long quantity){
+    public Product(Long id, String name, String image, Long price, String description, Long quantity) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -71,5 +79,21 @@ public class Product {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }

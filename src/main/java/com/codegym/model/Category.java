@@ -3,7 +3,6 @@ package com.codegym.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 public class Category {
@@ -11,16 +10,16 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     @NotBlank
-    @Size(min=3, max = 50)
+    @Size(min = 3, max = 50)
     private String categoryName;
-//
-//    @OneToMany(targetEntity = Product.class)
-//    List<Product> products;
+
+    @OneToMany(targetEntity = Product.class)
+    private List<Product> products;
 
     public Category() {
     }
 
-    public Category(Long categoryId, String categoryName){
+    public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
@@ -39,5 +38,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
