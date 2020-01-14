@@ -57,9 +57,6 @@ public class SupplierController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentSupplier.get().setSupplierName(supplier.getSupplierName());
-        currentSupplier.get().setSupplierPhone(supplier.getSupplierPhone());
-        currentSupplier.get().setSupplierAddress(supplier.getSupplierAddress());
-        ;
         supplierService.saveSupplier(currentSupplier.get());
         return new ResponseEntity<>(currentSupplier, HttpStatus.OK);
     }
