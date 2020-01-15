@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -41,15 +41,15 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/admin/product")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/product")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Product product){
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PutMapping("/admin/product/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/product/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, @PathVariable Long id){
         Optional<Product> product1 = productService.findById(id);
         if (!product1.isPresent()){
@@ -65,8 +65,8 @@ public class ProductController {
         return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/product/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/product/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
         Optional<Product> product = productService.findById(id);
         if (!product.isPresent()){
