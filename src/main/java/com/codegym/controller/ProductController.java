@@ -1,6 +1,5 @@
 package com.codegym.controller;
 
-import com.codegym.model.Category;
 import com.codegym.model.Product;
 import com.codegym.search.SearchByName;
 import com.codegym.service.ProductService;
@@ -8,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ProductController {
 
     @PostMapping("/product")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Product product){
+    public ResponseEntity<?> createProduct(@Valid @RequestBody Product product){
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
@@ -59,7 +56,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         product1.get().setName(product.getName());
-        product1.get().setImage(product.getImage());
         product1.get().setPrice(product.getPrice());
         product1.get().setDescription(product.getDescription());
         product1.get().setQuantity(product.getQuantity());
@@ -68,7 +64,7 @@ public class ProductController {
         return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/product/{id}")
+    @DeleteMapping("/product/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
         Optional<Product> product = productService.findById(id);
