@@ -6,13 +6,14 @@ import com.codegym.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class PictureServiceImpl implements PictureService {
     @Autowired
     private PictureRepository pictureRepository;
     @Override
-    public Iterable<Picture> findAllPicture() {
+    public List<Picture> findAllPicture() {
         return pictureRepository.findAll();
     }
 

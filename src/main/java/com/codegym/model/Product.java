@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -20,6 +21,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "supplierId")
     private Supplier supplier;
+
+    @OneToMany(targetEntity = Picture.class)
+    private List<Picture>pictureList;
 
     public Product() {
     }

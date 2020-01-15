@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.Category;
 import com.codegym.model.Product;
 import com.codegym.search.SearchByName;
 import com.codegym.service.ProductService;
@@ -7,18 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/admin")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -41,14 +44,14 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/admin/product")
+    @PostMapping("/product")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Product product){
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PutMapping("/admin/product/{id}")
+    @PutMapping("/product/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody Product product, @PathVariable Long id){
         Optional<Product> product1 = productService.findById(id);
