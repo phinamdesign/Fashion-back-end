@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class Product {
     private Long price;
     private String description;
     private Long quantity;
+//    private Date dateCreate;
 
     @ManyToOne
     @JoinColumn(name = "categoryId")
@@ -22,21 +24,32 @@ public class Product {
     private Supplier supplier;
 
     @OneToMany(targetEntity = Picture.class)
-    private List<Picture>pictureList;
+    private List<Picture> pictures;
+
 
     public Product() {
     }
 
-    public Product(Long id, String name, Long price, String description, Long quantity,
-                   Category category, Supplier supplier, List<Picture> pictureList) {
-        this.id = id;
+    public Product( String name, Long price, String description, Long quantity,
+                    Category category, Supplier supplier, List<Picture> pictures) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
         this.category = category;
         this.supplier = supplier;
-        this.pictureList = pictureList;
+        this.pictures = pictures;
+    }
+
+    public Product(String name, Long price, String description, Long quantity, List<Picture> pictures, Supplier supplier, Category category, Supplier supplier1, Date date) {
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
     }
 
     public Long getId() {
