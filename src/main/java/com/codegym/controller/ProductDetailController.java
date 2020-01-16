@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/api/admin")
+@RequestMapping("/api/auth")
 public class ProductDetailController {
     @Autowired
     private ProductDetailService productDetailService;
@@ -38,7 +38,7 @@ public class ProductDetailController {
     }
     @GetMapping("/productDetail/{id}")
     public ResponseEntity<?> getAProductDetail(
-            @PathVariable ("id") Long id, @RequestBody ProductDetail productDetail){
+            @PathVariable ("id") Long id){
         Optional<ProductDetail> thisProductDetail = productDetailService.findDetailById(id);
         if(!thisProductDetail.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
