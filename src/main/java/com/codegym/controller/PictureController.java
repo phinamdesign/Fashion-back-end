@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("api/admin/")
+@RequestMapping("api/auth")
 public class PictureController {
     @Autowired
     private PictureService pictureService;
@@ -28,12 +28,19 @@ public class PictureController {
         return new ResponseEntity<>(pictures, HttpStatus.OK);
     }
 
+//    @PostMapping("/picture")
+//    public ResponseEntity<Picture> createPicture(@RequestBody Picture picture, UriComponentsBuilder ucBuilder) {
+//        pictureService.savePicture(picture);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(ucBuilder.path("api/admin/picture/{id}").buildAndExpand(picture.getId()).toUri());
+//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/picture")
-    public ResponseEntity<Picture> createPicture(@RequestBody Picture picture, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> addNewBookPicture(@RequestBody Picture picture) {
+        System.out.println("Creating Book picture ");
         pictureService.savePicture(picture);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("api/admin/picture").buildAndExpand(picture.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Long>(picture.getId(), HttpStatus.CREATED);
     }
 
     @GetMapping("/picture/{id}")

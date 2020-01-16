@@ -2,6 +2,7 @@ package com.codegym.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
-    @NotBlank
+    @NotEmpty
     @Size(min = 3, max = 50)
     private String categoryName;
 
