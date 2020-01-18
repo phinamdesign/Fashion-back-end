@@ -26,6 +26,8 @@ public class Product {
     @OneToMany(targetEntity = Picture.class)
     private List<Picture> pictures;
 
+//    @OneToMany(targetEntity = ProductDetail.class)
+//    private List<ProductDetail> productDetails;
 
     public Product() {
     }
@@ -41,7 +43,7 @@ public class Product {
         this.pictures = pictures;
     }
 
-    public Product(String name, Long price, String description, Long quantity, List<Picture> pictures, Supplier supplier, Category category, Supplier supplier1, Date date) {
+    public Product(String name, Long price, String description, Long quantity, List<Picture> pictures, Supplier supplier, Category category, Date date) {
     }
 
     public List<Picture> getPictures() {

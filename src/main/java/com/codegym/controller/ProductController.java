@@ -77,7 +77,7 @@ public class ProductController {
 
     @DeleteMapping("/admin/product/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<?> deleteProduct(@PathVariable ("id") Long id){
         Optional<Product> product = productService.findById(id);
         if (!product.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -1,6 +1,6 @@
 package com.codegym.controller;
 
-import com.codegym.model.Oder;
+import com.codegym.model.Order;
 import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +20,16 @@ public class OderController {
 
     @GetMapping("/oder")
     public ResponseEntity<?> listOder(){
-        List<Oder> oders = (List<Oder>) oderService.findAll();
-        if (oders.isEmpty()){
+        List<Order> orders = (List<Order>) oderService.findAll();
+        if (orders.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(oders, HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @GetMapping("/oder/{id}")
     public ResponseEntity<?> getOder(@PathVariable Long id){
-        Optional<Oder> oder = oderService.findById(id);
+        Optional<Order> oder = oderService.findById(id);
         if (!oder.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -37,19 +37,19 @@ public class OderController {
     }
 
     @PostMapping("/oder")
-    public ResponseEntity<?> createOder(@Valid @RequestBody Oder oder){
-        oderService.save(oder);
-        return new ResponseEntity<>(oder, HttpStatus.CREATED);
+    public ResponseEntity<?> createOder(@Valid @RequestBody Order order){
+        oderService.save(order);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @PutMapping("oder/{id}")
-    public ResponseEntity<?> updateOder(@Valid @RequestBody Oder oder, @PathVariable Long id){
-        Optional<Oder> oder1 = oderService.findById(id);
+    public ResponseEntity<?> updateOder(@Valid @RequestBody Order order, @PathVariable Long id){
+        Optional<Order> oder1 = oderService.findById(id);
         if(!oder1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        oder1.get().setDeliveryTime(oder.getDeliveryTime());
-        oder1.get().setDeliveryAddress(oder.getDeliveryAddress());
+        oder1.get().setDeliveryTime(order.getDeliveryTime());
+        oder1.get().setDeliveryAddress(order.getDeliveryAddress());
 
         oderService.save(oder1.get());
         return new ResponseEntity<>(oder1, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class OderController {
 
     @DeleteMapping("/oder/{id}")
     public ResponseEntity<?> deleteOder(@PathVariable Long id){
-        Optional<Oder> oder = oderService.findById(id);
+        Optional<Order> oder = oderService.findById(id);
         if (!oder.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

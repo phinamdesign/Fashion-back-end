@@ -1,28 +1,51 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull
+    private long quantity;
     @ManyToOne
     private Size size;
     @ManyToOne
     private Color color;
     @ManyToOne
     private Product product;
+//    @ManyToOne
+//    private Order order;
 
     public ProductDetail() {
     }
 
-    public ProductDetail(Long id, Size size, Color color, Product product) {
+    public ProductDetail(Long id, @NotNull long quantity, Size size, Color color, Product product, Order order) {
         this.id = id;
+        this.quantity = quantity;
         this.size = size;
         this.color = color;
         this.product = product;
+//        this.order = order;
     }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+//    public Order getOrder() {
+//        return order;
+//    }
+//
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
 
     public Long getId() {
         return id;

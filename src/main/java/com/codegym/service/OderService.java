@@ -1,15 +1,15 @@
 package com.codegym.service;
 
-import com.codegym.model.Oder;
+import com.codegym.model.Order;
 
 import java.util.Optional;
 
 public interface OderService {
-    Optional<Oder> findById(Long id);
+    Optional<Order> findById(Long id);
 
-    Iterable<Oder> findAll();
+    Iterable<Order> findAll();
 
-    Oder save(Oder oder);
+    Order save(Order order);
 
     void delete(Long id);
 }

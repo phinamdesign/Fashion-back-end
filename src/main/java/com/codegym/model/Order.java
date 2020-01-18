@@ -1,24 +1,38 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
-public class Oder {
+public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date deliveryTime;
+    @NotEmpty
     private String deliveryAddress;
+    @OneToMany
+    private List<ProductDetail>productDetails;
 
-    public Oder() {
+    public Order() {
     }
 
-    public Oder(Long id, Date deliveryTime, String deliVeryAddress) {
+    public Order(Long id, Date deliveryTime, @NotEmpty String deliveryAddress, List<ProductDetail> productDetails) {
         this.id = id;
         this.deliveryTime = deliveryTime;
-        this.deliveryAddress = deliVeryAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.productDetails = productDetails;
+    }
+
+    public List<ProductDetail> getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(List<ProductDetail> productDetails) {
+        this.productDetails = productDetails;
     }
 
     public Long getId() {

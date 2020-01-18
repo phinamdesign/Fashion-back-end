@@ -1,6 +1,6 @@
 package com.codegym.service.impl;
 
-import com.codegym.model.Oder;
+import com.codegym.model.Order;
 import com.codegym.repository.OderRepository;
 import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +14,18 @@ public class OderServiceImpl implements OderService {
     private OderRepository oderRepository;
 
     @Override
-    public Optional<Oder> findById(Long id) {
+    public Optional<Order> findById(Long id) {
         return oderRepository.findById(id);
     }
 
     @Override
-    public Iterable<Oder> findAll() {
+    public Iterable<Order> findAll() {
         return oderRepository.findAll();
     }
 
     @Override
-    public Oder save(Oder oder) {
-        return oderRepository.save(oder);
+    public Order save(Order order) {
+        return oderRepository.save(order);
     }
 
     @Override
