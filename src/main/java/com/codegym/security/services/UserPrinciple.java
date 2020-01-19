@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 
 public class UserPrinciple implements UserDetails {
     private static final long serialVersionUID = 1L;
@@ -23,20 +25,23 @@ public class UserPrinciple implements UserDetails {
 
     private String email;
 
+    private String avatar;
+
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> roles;
 
     public UserPrinciple(Long id, String name,
-                         String username, String email, String password,
-                         Collection<? extends GrantedAuthority> authorities) {
+                         String username, String email, String password,String avatar,
+                         Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.avatar = avatar;
+        this.roles = roles;
     }
 
     public static UserPrinciple build(User user) {
@@ -50,13 +55,12 @@ public class UserPrinciple implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getAvatar(),
                 authorities
         );
     }
 
-    public Long getId() {
-        return id;
-    }
+
 
     public String getName() {
         return name;
@@ -66,43 +70,82 @@ public class UserPrinciple implements UserDetails {
         return email;
     }
 
-    // trả về username đã dùng trong qúa trình xác thực
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Collection<? extends GrantedAuthority> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<? extends GrantedAuthority> roles) {
+        this.roles = roles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+
+
     @Override
     public String getUsername() {
         return username;
     }
 
-    //trả về password đã dùng trong qúa trình xác thực
     @Override
     public String getPassword() {
         return password;
     }
 
-    //trả về danh sách các quyền của người dùng
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return roles;
     }
 
-    // trả về true nếu tài khoản của người dùng chưa hết hạn
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    //trả về true nếu người dùng chưa bị khóa
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    // trả về true nếu chứng thực (mật khẩu) của người dùng chưa hết hạn
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    //trả về true nếu người dùng đã được kích hoạt
     @Override
     public boolean isEnabled() {
         return true;

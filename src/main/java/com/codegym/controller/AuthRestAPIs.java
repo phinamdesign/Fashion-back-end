@@ -1,9 +1,5 @@
 package com.codegym.controller;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.Valid;
-
 import com.codegym.message.request.LoginForm;
 import com.codegym.message.request.SignUpForm;
 import com.codegym.message.response.JwtResponse;
@@ -11,41 +7,40 @@ import com.codegym.message.response.ResponseMessage;
 import com.codegym.model.Role;
 import com.codegym.model.RoleName;
 import com.codegym.model.User;
-import com.codegym.repository.RoleRepository;
-import com.codegym.repository.UserRepository;
 import com.codegym.security.jwt.JwtProvider;
+import com.codegym.security.services.UserPrinciple;
+import com.codegym.service.RoleService;
+import com.codegym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthRestAPIs {
-
     @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleService roleService;
 
     @Autowired
-    PasswordEncoder encoder;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     JwtProvider jwtProvider;
@@ -59,26 +54,29 @@ public class AuthRestAPIs {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),
+                userDetails.getId() , userDetails.getName(), userDetails.getEmail(), userDetails.getAvatar() ,
+                userDetails.getAuthorities()
+        ));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userService.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         // Creating user's account
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                passwordEncoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -86,27 +84,69 @@ public class AuthRestAPIs {
         strRoles.forEach(role -> {
             switch (role) {
                 case "admin":
-                    Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                    Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(adminRole);
 
                     break;
                 case "pm":
-                    Role pmRole = roleRepository.findByName(RoleName.ROLE_PM)
+                    Role pmRole = roleService.findByName(RoleName.ROLE_PM)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(pmRole);
 
                     break;
                 default:
-                    Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    Role userRole = roleService.findByName(RoleName.ROLE_USER)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(userRole);
             }
         });
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userService.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
+
+//    @PutMapping("/update-profile/{id}")
+//    public ResponseEntity<?> updateUser(@Valid @RequestBody UserForm userForm, @PathVariable Long id) {
+//        Optional<User> user = userService.findById(id);
+//
+//        if(user == null) {
+//            return new ResponseEntity<>("Can't Find User By Id" + id, HttpStatus.BAD_REQUEST);
+//        }
+//
+//        try {
+//            user.get().setName(userForm.getName());
+//
+//            userService.save(user.get());
+//
+//            return new ResponseEntity<>(new ResponseMessage("Update successful"), HttpStatus.OK);
+//        } catch (Exception e ) {
+//            throw new RuntimeException("Fail!");
+//        }
+//    }
+//
+//
+//    @PutMapping("/update-password/{id}")
+//    public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
+//        Optional<User> user = userService.findById(id);
+//
+//        if (user == null ){
+//            return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
+//        }
+//
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(passForm.getUsername(), passForm.getCurrentPassword()));
+//
+//            user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
+//
+//            userService.save(user.get());
+//
+//            return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Fail!");
+//        }
+//    }
 }
