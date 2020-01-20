@@ -18,7 +18,7 @@ public class OderController {
     @Autowired
     private OderService oderService;
 
-    @GetMapping("/oder")
+    @GetMapping("/order")
     public ResponseEntity<?> listOder(){
         List<Order> orders = (List<Order>) oderService.findAll();
         if (orders.isEmpty()){
@@ -27,7 +27,7 @@ public class OderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @GetMapping("/oder/{id}")
+    @GetMapping("/order/{id}")
     public ResponseEntity<?> getOder(@PathVariable Long id){
         Optional<Order> oder = oderService.findById(id);
         if (!oder.isPresent()){
@@ -36,13 +36,13 @@ public class OderController {
         return new ResponseEntity<>(oder, HttpStatus.OK);
     }
 
-    @PostMapping("/oder")
+    @PostMapping("/order")
     public ResponseEntity<?> createOder(@Valid @RequestBody Order order){
         oderService.save(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
-    @PutMapping("oder/{id}")
+    @PutMapping("order/{id}")
     public ResponseEntity<?> updateOder(@Valid @RequestBody Order order, @PathVariable Long id){
         Optional<Order> oder1 = oderService.findById(id);
         if(!oder1.isPresent()){
@@ -55,7 +55,7 @@ public class OderController {
         return new ResponseEntity<>(oder1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/oder/{id}")
+    @DeleteMapping("/order/{id}")
     public ResponseEntity<?> deleteOder(@PathVariable Long id){
         Optional<Order> oder = oderService.findById(id);
         if (!oder.isPresent()){

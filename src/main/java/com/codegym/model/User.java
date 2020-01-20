@@ -40,8 +40,8 @@ public class User {
     private Long phoneNumber;
 
     private String address;
-
-    private String avatar;
+//    @JsonIgnore
+//    private String avatar;
 
     @JsonIgnore
     @OneToMany(targetEntity = Commenter.class)
@@ -59,11 +59,55 @@ public class User {
 
     public User() {}
 
-    public User(String name, String username, String email, String password) {
+
+//    public User(String name, String username, String email, String encode, String address, String phoneNumber) {
+//    }
+
+    public User(Long id, @NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, Long phoneNumber, String address, List<Commenter> comments, @NotBlank @Size(min = 6, max = 100) String password, Set<Role> roles) {
+        this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.comments = comments;
         this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String name, String username, String email, String encode) {
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+//    public String getAvatar() {
+//        return avatar;
+//    }
+//
+//    public void setAvatar(String avatar) {
+//        this.avatar = avatar;
+//    }
+
+    public List<Commenter> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Commenter> comments) {
+        this.comments = comments;
     }
 
     public Long getId() {

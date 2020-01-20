@@ -12,19 +12,41 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date deliveryTime;
+    private Long total;
     @NotEmpty
     private String deliveryAddress;
     @OneToMany
     private List<ProductDetail>productDetails;
+    @ManyToOne
+    private User user;
 
     public Order() {
     }
 
-    public Order(Long id, Date deliveryTime, @NotEmpty String deliveryAddress, List<ProductDetail> productDetails) {
+    public Order(Long id, Date deliveryTime, Long total,
+                 @NotEmpty String deliveryAddress, List<ProductDetail> productDetails, User user) {
         this.id = id;
         this.deliveryTime = deliveryTime;
+        this.total = total;
         this.deliveryAddress = deliveryAddress;
         this.productDetails = productDetails;
+        this.user = user;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<ProductDetail> getProductDetails() {
