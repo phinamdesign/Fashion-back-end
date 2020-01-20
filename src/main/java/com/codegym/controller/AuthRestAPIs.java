@@ -1,7 +1,9 @@
 package com.codegym.controller;
 
 import com.codegym.message.request.LoginForm;
+import com.codegym.message.request.PasswordForm;
 import com.codegym.message.request.SignUpForm;
+import com.codegym.message.request.UserForm;
 import com.codegym.message.response.JwtResponse;
 import com.codegym.message.response.ResponseMessage;
 import com.codegym.model.Role;
@@ -108,45 +110,45 @@ public class AuthRestAPIs {
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 
-//    @PutMapping("/update-profile/{id}")
-//    public ResponseEntity<?> updateUser(@Valid @RequestBody UserForm userForm, @PathVariable Long id) {
-//        Optional<User> user = userService.findById(id);
-//
-//        if(user == null) {
-//            return new ResponseEntity<>("Can't Find User By Id" + id, HttpStatus.BAD_REQUEST);
-//        }
-//
-//        try {
-//            user.get().setName(userForm.getName());
-//
-//            userService.save(user.get());
-//
-//            return new ResponseEntity<>(new ResponseMessage("Update successful"), HttpStatus.OK);
-//        } catch (Exception e ) {
-//            throw new RuntimeException("Fail!");
-//        }
-//    }
-//
-//
-//    @PutMapping("/update-password/{id}")
-//    public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
-//        Optional<User> user = userService.findById(id);
-//
-//        if (user == null ){
-//            return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
-//        }
-//
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(passForm.getUsername(), passForm.getCurrentPassword()));
-//
-//            user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
-//
-//            userService.save(user.get());
-//
-//            return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Fail!");
-//        }
-//    }
+    @PutMapping("/update-profile/{id}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserForm userForm, @PathVariable Long id) {
+        Optional<User> user = userService.findById(id);
+
+        if(user == null) {
+            return new ResponseEntity<>("Can't Find User By Id" + id, HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            user.get().setName(userForm.getName());
+
+            userService.save(user.get());
+
+            return new ResponseEntity<>(new ResponseMessage("Update successful"), HttpStatus.OK);
+        } catch (Exception e ) {
+            throw new RuntimeException("Fail!");
+        }
+    }
+
+
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<?>updatePassword(@Valid @RequestBody PasswordForm passForm, @PathVariable Long id) {
+        Optional<User> user = userService.findById(id);
+
+        if (user == null ){
+            return new ResponseEntity<>(new ResponseMessage("Not found user"),HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(passForm.getUsername(), passForm.getCurrentPassword()));
+
+            user.get().setPassword(passwordEncoder.encode(passForm.getNewPassword()));
+
+            userService.save(user.get());
+
+            return new ResponseEntity<>(new ResponseMessage("Change password successful"),HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException("Fail!");
+        }
+    }
 }
