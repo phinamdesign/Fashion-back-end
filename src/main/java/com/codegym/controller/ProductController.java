@@ -86,6 +86,15 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    @GetMapping("/auth/product/list/{id}")
+    public ResponseEntity<?> getProductByCategoryId(@PathVariable Long id){
+        List<Product> product = productService.findAllByCategory_CategoryId(id);
+        if (product.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
 //    @GetMapping("product/search")
 //    public ResponseEntity<?> searchByName(@RequestParam("name") Optional<String> name, Pageable pageable){
 //        Page<Product> products;

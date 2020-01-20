@@ -6,6 +6,7 @@ import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Iterable<Product> findByName(String name) {
         return productRepository.findByName(name);
+    }
+
+    @Override
+    public List<Product> findAllByCategory_CategoryId(Long Category_CategoryId) {
+        return productRepository.findAllByCategory_CategoryId(Category_CategoryId);
     }
 
 }

@@ -37,7 +37,7 @@ public class User {
     @Email
     private String email;
 
-    private Long phoneNumber;
+    private Long phone;
 
     private String address;
 
@@ -114,12 +114,20 @@ public class User {
         this.roles = roles;
     }
 
-    public Long getPhoneNumber() {
-        return phoneNumber;
+    public Long getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
+
+    public List<Commenter> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Commenter> comments) {
+        this.comments = comments;
     }
 
     public String getAddress() {
