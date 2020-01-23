@@ -19,4 +19,5 @@ public interface ProductService {
 
     Iterable<Product> findByName(String name);
     List<Product> findAllByCategory_CategoryId(Long Category_CategoryId);
+    List<Product> findAllBySupplier_SupplierId(Long Supplier_SupplierId);
 }

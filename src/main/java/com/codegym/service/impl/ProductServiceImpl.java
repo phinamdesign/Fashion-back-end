@@ -44,4 +44,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByCategory_CategoryId(Category_CategoryId);
     }
 
+    @Override
+    public List<Product> findAllBySupplier_SupplierId(Long Supplier_SupplierId) {
+        return productRepository.findAllBySupplier_SupplierId(Supplier_SupplierId);
+    }
+
 }

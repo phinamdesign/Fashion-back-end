@@ -86,7 +86,7 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @GetMapping("/auth/product/list/{id}")
+    @GetMapping("/auth/product/list/category/{id}")
     public ResponseEntity<?> getProductByCategoryId(@PathVariable Long id){
         List<Product> product = productService.findAllByCategory_CategoryId(id);
         if (product.isEmpty()){
@@ -95,27 +95,14 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-//    @GetMapping("product/search")
-//    public ResponseEntity<?> searchByName(@RequestParam("name") Optional<String> name, Pageable pageable){
-//        Page<Product> products;
-//        if (name.isPresent()){
-//            products = productService.findAllByName(name.get(), pageable);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
-
-//    public ResponseEntity<?> searchById(@RequestBody Optional<Long> id, Pageable pageable){
-//        Page<Product> products;
-//        if (id.isPresent()){
-//            products = productService.findAllById(id.get(), pageable);
-//        } else {
-////            products = productService.findAll(pageable);
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
+    @GetMapping("/auth/product/list/supplier/{id}")
+    public ResponseEntity<?> getProductBySupplierId(@PathVariable Long id){
+        List<Product> product = productService.findAllBySupplier_SupplierId(id);
+        if (product.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
 
     @PostMapping("/auth/product/search-by-name")
     public ResponseEntity<?> searchByName(@RequestBody SearchByName productForm){
