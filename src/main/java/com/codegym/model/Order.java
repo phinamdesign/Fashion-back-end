@@ -6,31 +6,34 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date deliveryTime;
+    private Date date;
     private Long total;
-    @NotEmpty
     private String deliveryAddress;
     @OneToMany
     private List<ProductDetail>productDetails;
     @ManyToOne
     private User user;
 
+    private String phone;
+    private Status status;
+
     public Order() {
     }
 
-    public Order(Long id, Date deliveryTime, Long total,
-                 @NotEmpty String deliveryAddress, List<ProductDetail> productDetails, User user) {
+    public Order(Long id, Date date, Long total, String deliveryAddress, List<ProductDetail> productDetails, User user, String phone, Status status) {
         this.id = id;
-        this.deliveryTime = deliveryTime;
+        this.date = date;
         this.total = total;
         this.deliveryAddress = deliveryAddress;
         this.productDetails = productDetails;
         this.user = user;
+        this.phone = phone;
+        this.status = status;
     }
 
     public Long getTotal() {
@@ -65,12 +68,12 @@ public class Order {
         this.id = id;
     }
 
-    public Date getDeliveryTime() {
-        return deliveryTime;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDeliveryTime(Date deliveryTime) {
-        this.deliveryTime = deliveryTime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDeliveryAddress() {
@@ -79,5 +82,21 @@ public class Order {
 
     public void setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

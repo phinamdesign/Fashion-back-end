@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class ColorContrller {
     @Autowired
     private ColorService colorService;

@@ -15,13 +15,13 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
-@RequestMapping("/api/admin")
+@RequestMapping("/api/auth")
 public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
     @GetMapping("/supplier")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Supplier>> getAllSupplier() {
         List<Supplier> supplierList = supplierService.findAllSupplier();
         if (supplierList.isEmpty()) {

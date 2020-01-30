@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.Product;
 import com.codegym.model.ProductDetail;
 import com.codegym.repository.ProductDetailRepository;
 import com.codegym.service.ProductDetailService;
@@ -30,5 +31,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public void removeProductDetail(Long id) {
         productDetailRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductDetail findByProduct_IdAndOrder_Id(Long Product_Id, Long Order_Id) {
+        return productDetailRepository.findByProduct_IdAndOrder_Id(Product_Id, Order_Id);
+    }
+
+    @Override
+    public List<ProductDetail> findByOrder_Id(Long Order_Id) {
+        return productDetailRepository.findByOrder_Id(Order_Id);
     }
 }

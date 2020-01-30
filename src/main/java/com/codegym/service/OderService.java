@@ -1,6 +1,7 @@
 package com.codegym.service;
 
 import com.codegym.model.Order;
+import com.codegym.model.Status;
 
 import java.util.Optional;
 
@@ -12,4 +13,5 @@ public interface OderService {
     Order save(Order order);
 
     void delete(Long id);
+    Order findByStatusAndUser_Id(Status status, Long User_Id);
 }

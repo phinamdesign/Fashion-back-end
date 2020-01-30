@@ -1,6 +1,8 @@
 package com.codegym.controller;
 
 import com.codegym.model.Order;
+import com.codegym.model.Status;
+import com.codegym.repository.OderRepository;
 import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,13 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class OderController {
     @Autowired
-    private OderService oderService;
+    private OderService orderService;
+    @Autowired
+    private OderRepository orderRepository;
 
     @GetMapping("/order")
     public ResponseEntity<?> listOder(){
-        List<Order> orders = (List<Order>) oderService.findAll();
+        List<Order> orders = (List<Order>) orderService.findAll();
         if (orders.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -29,39 +33,75 @@ public class OderController {
 
     @GetMapping("/order/{id}")
     public ResponseEntity<?> getOder(@PathVariable Long id){
-        Optional<Order> oder = oderService.findById(id);
+        Optional<Order> oder = orderService.findById(id);
         if (!oder.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(oder, HttpStatus.OK);
     }
 
+//    @PostMapping("/order")
+//    public ResponseEntity<?> createOder(@Valid @RequestBody Order order){
+//        orderService.save(order);
+//        return new ResponseEntity<>(order, HttpStatus.CREATED);
+//    }
     @PostMapping("/order")
-    public ResponseEntity<?> createOder(@Valid @RequestBody Order order){
-        oderService.save(order);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    public ResponseEntity<?> createOrder(@RequestBody Order order) {
+        order.setStatus(Status.normal);
+        orderService.save(order);
+        return new ResponseEntity<Long>(order.getId(), HttpStatus.CREATED);
     }
+
 
     @PutMapping("order/{id}")
     public ResponseEntity<?> updateOder(@Valid @RequestBody Order order, @PathVariable Long id){
-        Optional<Order> oder1 = oderService.findById(id);
+        Optional<Order> oder1 = orderService.findById(id);
         if(!oder1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        oder1.get().setDeliveryTime(order.getDeliveryTime());
+        oder1.get().setDate(order.getDate());
         oder1.get().setDeliveryAddress(order.getDeliveryAddress());
 
-        oderService.save(oder1.get());
+        orderService.save(oder1.get());
         return new ResponseEntity<>(oder1, HttpStatus.OK);
     }
 
     @DeleteMapping("/order/{id}")
     public ResponseEntity<?> deleteOder(@PathVariable Long id){
-        Optional<Order> oder = oderService.findById(id);
+        Optional<Order> oder = orderService.findById(id);
         if (!oder.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        oderService.delete(id);
+        orderService.delete(id);
         return new ResponseEntity<>(oder, HttpStatus.OK);
+    }
+
+    @GetMapping("order/cart/{id}")
+    public ResponseEntity<Order> findByStatusAndUser_Id(@PathVariable("id") Long id) {
+        Status status = Status.normal;
+        Order order = orderRepository.findByStatusAndUser_Id(status, id);
+        if (order != null) {
+            return new ResponseEntity<Order>(order, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/order/toOrder")
+    public ResponseEntity<?> orderToOrder(@RequestBody Order order) {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        Optional<Order> currentOrder = orderService.findById(order.getId());
+        if (currentOrder.isPresent()) {
+            currentOrder.get().setDate(date);
+            currentOrder.get().setStatus(Status.order);
+            currentOrder.get().setTotal(order.getTotal());
+            currentOrder.get().setPhone(order.getPhone());
+            currentOrder.get().setDeliveryAddress(order.getDeliveryAddress());
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

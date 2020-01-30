@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.model.Order;
+import com.codegym.model.Status;
 import com.codegym.repository.OderRepository;
 import com.codegym.service.OderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class OderServiceImpl implements OderService {
     @Override
     public void delete(Long id) {
         oderRepository.deleteById(id);
+    }
+
+    @Override
+    public Order findByStatusAndUser_Id(Status status, Long User_Id) {
+        return oderRepository.findByStatusAndUser_Id(status, User_Id);
     }
 }

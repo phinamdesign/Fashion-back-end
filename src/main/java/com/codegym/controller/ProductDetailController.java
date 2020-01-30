@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.Product;
 import com.codegym.model.ProductDetail;
 import com.codegym.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,25 @@ public class ProductDetailController {
         return new ResponseEntity<>(productDetailList, HttpStatus.OK);
     }
 
+//    @PostMapping("/productDetail")
+//    public ResponseEntity<?> createProductDetail(
+//            @RequestBody ProductDetail productDetail, UriComponentsBuilder ucBuilder) {
+//        productDetailService.saveProductDetail(productDetail);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(ucBuilder.path("/api/admin/productDetail/{id}").buildAndExpand(productDetail.getId()).toUri());
+//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/productDetail")
-    public ResponseEntity<?> createProductDetail(
-            @RequestBody ProductDetail productDetail, UriComponentsBuilder ucBuilder) {
-        productDetailService.saveProductDetail(productDetail);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/admin/productDetail/{id}").buildAndExpand(productDetail.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    public ResponseEntity<?> addNewOrderItem(@RequestBody ProductDetail productDetail){
+        try {
+            productDetailService.saveProductDetail(productDetail);
+            return new ResponseEntity<ProductDetail>(productDetail, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
+
     @GetMapping("/productDetail/{id}")
     public ResponseEntity<?> getAProductDetail(
             @PathVariable ("id") Long id){
@@ -55,6 +67,7 @@ public class ProductDetailController {
         currentProductDetail.get().setColor(productDetail.getColor());
         currentProductDetail.get().setSize(productDetail.getSize());
         currentProductDetail.get().setProduct(productDetail.getProduct());
+        currentProductDetail.get().setQuantity(productDetail.getQuantity());
         productDetailService.saveProductDetail(currentProductDetail.get());
         return new ResponseEntity<>(currentProductDetail,HttpStatus.OK);
     }
@@ -67,5 +80,20 @@ public class ProductDetailController {
         }
         productDetailService.removeProductDetail(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/productDetail/cart/{id}")
+    public ResponseEntity<List<ProductDetail>> findByOrderId(@PathVariable Long id) {
+        List<ProductDetail> productDetails = productDetailService.findByOrder_Id(id);
+        return new ResponseEntity<List<ProductDetail>>(productDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/productDetail/cart/{idProduct}/{idOrder}")
+    public  ResponseEntity<ProductDetail> findByProduct_IdAndOrder_Id(@PathVariable Long idProduct,@PathVariable Long idOrder) {
+        ProductDetail productDetail = productDetailService.findByProduct_IdAndOrder_Id(idProduct,idOrder);
+        if (productDetail==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<ProductDetail>(productDetail, HttpStatus.OK);
     }
 }

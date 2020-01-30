@@ -16,14 +16,14 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(maxAge = 3600)
 //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-@RequestMapping("/api/admin")
+@RequestMapping("/api/auth")
 
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/category")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<Category>> getAllCategory() {
         List<Category> categoryList = (List<Category>) categoryService.findAllCategory();
         if (categoryList.isEmpty()) {
@@ -75,7 +75,7 @@ public class CategoryController {
     }
 
     @GetMapping("/search/category")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ResponseEntity<?> findCategory(@RequestParam("name") Optional<String> categoryName) {
         Iterable<Category> categories;
         if (categoryName.isPresent()) {
