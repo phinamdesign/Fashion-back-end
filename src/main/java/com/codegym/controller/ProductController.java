@@ -2,6 +2,7 @@ package com.codegym.controller;
 
 import com.codegym.model.Product;
 import com.codegym.search.SearchByName;
+import com.codegym.search.SearchProductByName;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -119,6 +120,62 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(products, HttpStatus.OK);
+        }
+    }
+
+
+
+//    @PostMapping("/auth/product/search-by-productId-and-name")
+//    public ResponseEntity<?> searchAlbumByTagIdAndTitle(@RequestBody SearchAlbumByTagIdAndTitle formSearch) {
+//        if (formSearch.getTitle() == null && formSearch.getTagId() == null) {
+//            List<Album> albums = (List<Album>) albumService.findAll();
+//            if(albums.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            return new ResponseEntity<>(albums,HttpStatus.OK);
+//        }
+//
+//        if (formSearch.getTitle() == null && formSearch.getTagId() != null) {
+//            List<Album> albums = (List<Album>) albumService.findAlbumsByTagId(formSearch.getTagId());
+//            if(albums.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            return new ResponseEntity<>(albums,HttpStatus.OK);
+//        }
+//
+//        if (formSearch.getTitle() != null && formSearch.getTagId() == null) {
+//            List<Album> diaries = (List<Album>) albumService.findAlbumsByTitleContaining(formSearch.getTitle());
+//            if(diaries.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            return new ResponseEntity<>(diaries,HttpStatus.OK);
+//        }
+//
+//        if (formSearch.getTagId() != null && formSearch.getTitle() != null) {
+//            List<Album> albums = (List<Album>) albumService.findAlbumsByTagIdAndTitleContaining(formSearch.getTagId(),formSearch.getTitle());
+//            if(albums.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            return new ResponseEntity<>(albums,HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @PostMapping("/auth/product/search-product-by-name")
+    public ResponseEntity<?> findProductByName(@RequestBody SearchProductByName searchProductByName) {
+        if(searchProductByName.getNameProduct() == "" || searchProductByName.getNameProduct() == null) {
+            List<Product> products = (List<Product>) productService.findAll();
+            if(products.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(products,HttpStatus.OK);
+        } else {
+            List<Product> products = (List<Product>) productService.findProductsByNameContaining(searchProductByName.getNameProduct());
+            if(products.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(products,HttpStatus.OK);
         }
     }
 }
