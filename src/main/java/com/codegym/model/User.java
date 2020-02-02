@@ -43,13 +43,12 @@ public class User {
 
     private String avatar;
 
-    @JsonIgnore
-    @OneToMany(targetEntity = Commenter.class)
-    private List<Commenter> comments;
-
     @NotBlank
     @Size(min=6, max = 100)
     private String password;
+
+    @OneToMany(targetEntity = Commenter.class)
+    private List<Commenter> commenters;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -64,6 +63,14 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public List<Commenter> getCommenters() {
+        return commenters;
+    }
+
+    public void setCommenters(List<Commenter> commenters) {
+        this.commenters = commenters;
     }
 
     public Long getId() {
@@ -120,14 +127,6 @@ public class User {
 
     public void setPhone(Long phone) {
         this.phone = phone;
-    }
-
-    public List<Commenter> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Commenter> comments) {
-        this.comments = comments;
     }
 
     public String getAddress() {

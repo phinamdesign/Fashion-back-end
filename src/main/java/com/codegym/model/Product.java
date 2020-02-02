@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -15,6 +17,9 @@ public class Product {
     private Long quantity;
 //    private Date dateCreate;
 
+    @OneToMany(targetEntity = Commenter.class)
+    private List<Commenter> commenters;
+
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
@@ -26,14 +31,15 @@ public class Product {
     @OneToMany(targetEntity = Picture.class)
     private List<Picture> pictures;
 
-//    @OneToMany(targetEntity = ProductDetail.class)
-//    private List<ProductDetail> productDetails;
+    @OneToMany(targetEntity = ProductDetail.class)
+    private List<ProductDetail> productDetails;
 
     public Product() {
     }
 
     public Product( String name, Long price, String description, Long quantity,
-                    Category category, Supplier supplier, List<Picture> pictures) {
+                    Category category, Supplier supplier, List<Picture> pictures
+    ) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -43,7 +49,12 @@ public class Product {
         this.pictures = pictures;
     }
 
-    public Product(String name, Long price, String description, Long quantity, List<Picture> pictures, Supplier supplier, Category category, Date date) {
+    public List<Commenter> getCommenters() {
+        return commenters;
+    }
+
+    public void setCommenters(List<Commenter> commenters) {
+        this.commenters = commenters;
     }
 
     public List<Picture> getPictures() {

@@ -108,8 +108,8 @@ public class ProductController {
     @PostMapping("/auth/product/search-by-name")
     public ResponseEntity<?> searchByName(@RequestBody SearchByName productForm){
         if (productForm.getName() == "" || productForm.getName() == null){
-            List<Product> tags = (List<Product>) productService.findAll();
-            if (tags.isEmpty()){
+            List<Product> products = (List<Product>) productService.findAll();
+            if (products.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(HttpStatus.OK);
