@@ -104,4 +104,36 @@ public class OderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/order/change-status/{id}")
+    public ResponseEntity<?> changeOrderStatus(@RequestBody String status, @PathVariable Long id) {
+        Status currentStatus;
+        switch (status) {
+            case "order":
+                currentStatus = Status.order;
+                break;
+            case "processing":
+                currentStatus = Status.processing;
+                break;
+            case "Cancel":
+                currentStatus = Status.Cancel;
+                break;
+            case "Done":
+                currentStatus = Status.Done;
+                break;
+            case "normal":
+                currentStatus = Status.normal;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + status);
+        }
+        Optional<Order> currentOrder = orderService.findById(id);
+        if (currentOrder.isPresent()) {
+            currentOrder.get().setStatus(currentStatus);
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
