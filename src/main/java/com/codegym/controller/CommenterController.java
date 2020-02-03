@@ -1,23 +1,30 @@
 package com.codegym.controller;
 
 import com.codegym.model.Commenter;
+import com.codegym.model.Product;
 import com.codegym.search.SearchByTitle;
 import com.codegym.service.CommenterService;
+import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class CommenterController {
     @Autowired
     private CommenterService commenterService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/commenter")
     public ResponseEntity<?> listCommenter(){
@@ -39,7 +46,18 @@ public class CommenterController {
 
     @PostMapping("/commenter")
     public ResponseEntity<?> createCommenter(@Valid @RequestBody Commenter commenter){
+        if(commenter.getProductId() != null) {
+            Optional<Product> product = productService.findById(commenter.getProductId());
+            commenter.setProduct(product.get());
+        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String date = now.format(format);
+        commenter.setEdit(false);
+        commenter.setDate(date);
+
         commenterService.save(commenter);
+
         return new ResponseEntity<>(commenter, HttpStatus.CREATED);
     }
 
@@ -49,9 +67,13 @@ public class CommenterController {
         if(!commenter1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        commenter1.get().setTitle(commenter.getTitle());
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String date = now.format(format);
+
+        commenter1.get().setEdit(true);
+        commenter1.get().setDate(date);
         commenter1.get().setContent(commenter.getContent());
-        commenter1.get().setTime(commenter.getTime());
 
         commenterService.save(commenter1.get());
         return new ResponseEntity<>(commenter1, HttpStatus.OK);
@@ -67,19 +89,15 @@ public class CommenterController {
         return new ResponseEntity<>(commenter, HttpStatus.OK);
     }
 
-    @PostMapping("/commenter/search-by-title")
-    public ResponseEntity<?> searchByTitle(@RequestBody SearchByTitle searchByTitle){
-        if (searchByTitle.getTitle() == "" || searchByTitle.getTitle() == null){
-            List<Commenter> commenters = (List<Commenter>) commenterService.findAll();
-            if (commenters.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(commenters, HttpStatus.OK);
-        }
-        List<Commenter> commenters = (List<Commenter>) commenterService.findByTitle(searchByTitle.getTitle());
-        if (commenters.isEmpty()){
+    @GetMapping("/commenter/product/{id}")
+    public ResponseEntity<?> getAllCommentByProductId(@PathVariable Long id) {
+        List<Commenter> commenters = (List<Commenter>) commenterService.findCommentersByProductId(id);
+
+        if(commenters.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
         return new ResponseEntity<>(commenters, HttpStatus.OK);
     }
+
 }

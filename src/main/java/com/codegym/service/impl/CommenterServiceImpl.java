@@ -34,7 +34,8 @@ public class CommenterServiceImpl implements CommenterService {
     }
 
     @Override
-    public Iterable<Commenter> findByTitle(String title) {
-        return commenterRepository.findByTitle(title);
+    public Iterable<Commenter> findCommentersByProductId(Long productId) {
+        return commenterRepository.findCommentersByProductId(productId);
     }
+
 }

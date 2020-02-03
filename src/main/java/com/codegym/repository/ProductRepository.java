@@ -15,5 +15,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllById(Long id, Pageable pageable);
     List<Product> findAllByCategory_CategoryId(Long Category_CategoryId);
     List<Product> findAllBySupplier_SupplierId(Long Supplier_SupplierId);
+
+    Iterable<Product> findProductsByNameContaining(String name);
+
+//    Iterable<Product> findAllByNameContaining(String name);
+//
+//    Page<Product> findAllByOrderByDateAsc(Pageable pageable);
+//    Page<Product> findAllByOrderByDateDesc(Pageable pageable);
+//
+//    Iterable<Product> findProductsByCategoryId(Long category_id);
+//    Iterable<Product> findProductsByCategoryIdAnAndName(Long category_id , String name);
 }
 

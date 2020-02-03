@@ -13,5 +13,5 @@ public interface CommenterService {
 
     void delete(Long id);
 
-    Iterable<Commenter> findByTitle(String title);
+    Iterable<Commenter> findCommentersByProductId(Long productId);
 }

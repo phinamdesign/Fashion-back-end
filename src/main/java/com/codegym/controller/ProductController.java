@@ -1,7 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.model.Product;
-import com.codegym.search.SearchByName;
+import com.codegym.search.SearchProductByName;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -104,21 +104,20 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/auth/product/search-by-name")
-    public ResponseEntity<?> searchByName(@RequestBody SearchByName productForm){
-        if (productForm.getName() == "" || productForm.getName() == null){
-            List<Product> tags = (List<Product>) productService.findAll();
-            if (tags.isEmpty()){
+    @PostMapping("/auth/product/search-product-by-name")
+    public ResponseEntity<?> findProductByName(@RequestBody SearchProductByName searchProductByName) {
+        if(searchProductByName.getNameProduct() == "" || searchProductByName.getNameProduct() == null) {
+            List<Product> products = (List<Product>) productService.findAll();
+            if(products.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(HttpStatus.OK);
             }
-        }
-        List<Product> products = (List<Product>) productService.findByName(productForm.getName());
-        if (products.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(products,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(products, HttpStatus.OK);
+            List<Product> products = (List<Product>) productService.findProductsByNameContaining(searchProductByName.getNameProduct());
+            if(products.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(products,HttpStatus.OK);
         }
     }
 }

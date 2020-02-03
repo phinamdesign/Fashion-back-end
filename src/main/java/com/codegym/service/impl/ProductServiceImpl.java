@@ -49,4 +49,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllBySupplier_SupplierId(Supplier_SupplierId);
     }
 
+    @Override
+    public Iterable<Product> findProductsByNameContaining(String name) {
+        return productRepository.findProductsByNameContaining(name);
+    }
+
 }
