@@ -70,6 +70,7 @@ public class ProductController {
         product1.get().setPrice(product.getPrice());
         product1.get().setDescription(product.getDescription());
         product1.get().setQuantity(product.getQuantity());
+        product1.get().setPictures(product.getPictures());
         productService.save(product1.get());
 
         return new ResponseEntity<>(product1, HttpStatus.OK);
