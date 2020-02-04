@@ -18,4 +18,6 @@ public interface OrderService {
     Order findByStatusAndUser_Id(Status status, Long User_Id);
 
     List<Order> findAllByUser_Id(Long User_Id);
+
+    void deleteOrder(Order order);
 }

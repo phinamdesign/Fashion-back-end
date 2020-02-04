@@ -44,4 +44,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findAllByUser_Id(Long User_Id) {
         return orderRepository.findAllByUser_Id(User_Id);
     }
+
+    @Override
+    public void deleteOrder(Order order) {
+        orderRepository.delete(order);
+    }
 }

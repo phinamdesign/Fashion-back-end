@@ -1,9 +1,12 @@
 package com.codegym.controller;
 
+import com.codegym.message.response.ResponseMessage;
 import com.codegym.model.Order;
+import com.codegym.model.ProductDetail;
 import com.codegym.model.Status;
 import com.codegym.repository.OrderRepository;
 import com.codegym.service.OrderService;
+import com.codegym.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ProductDetailService productDetailService;
 
     @GetMapping("/order")
     @PreAuthorize("hasRole('ADMIN')")
@@ -72,14 +77,34 @@ public class OrderController {
         return new ResponseEntity<>(oder1, HttpStatus.OK);
     }
 
+//    @DeleteMapping("/order/{id}")
+//    public ResponseEntity<?> deleteOder(@PathVariable Long id){
+//        Optional<Order> oder = orderService.findById(id);
+//        if (!oder.isPresent()){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        orderService.delete(id);
+//        return new ResponseEntity<>(oder, HttpStatus.OK);
+//    }
+
     @DeleteMapping("/order/{id}")
     public ResponseEntity<?> deleteOder(@PathVariable Long id){
-        Optional<Order> oder = orderService.findById(id);
-        if (!oder.isPresent()){
+        Optional<Order> currentOrder = orderService.findById(id);
+        if (currentOrder.isPresent()){
+            if(currentOrder.get().getStatus()==Status.Cancel){
+                List<ProductDetail> productDetailList = productDetailService.findByOrder_Id(id);
+                for(ProductDetail productDetail: productDetailList){
+                    productDetailService.deleteProductDetail(productDetail);
+                }
+                orderService.deleteOrder(currentOrder.get());
+                return new ResponseEntity<>(currentOrder, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(new ResponseMessage("Enable remove this order"),HttpStatus.BAD_REQUEST);
+            }
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        orderService.delete(id);
-        return new ResponseEntity<>(oder, HttpStatus.OK);
+
     }
 
     @GetMapping("order/cart/{id}")

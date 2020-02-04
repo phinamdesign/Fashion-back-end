@@ -13,5 +13,6 @@ public interface ProductDetailService {
     void removeProductDetail(Long id);
     ProductDetail findByProduct_IdAndOrder_Id(Long Product_Id, Long Order_Id);
     List<ProductDetail> findByOrder_Id(Long Order_Id);
+    void deleteProductDetail(ProductDetail productDetail);
 
 }
