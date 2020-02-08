@@ -42,4 +42,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public List<ProductDetail> findByOrder_Id(Long Order_Id) {
         return productDetailRepository.findByOrder_Id(Order_Id);
     }
+
+    @Override
+    public void deleteProductDetail(ProductDetail productDetail) {
+        productDetailRepository.delete(productDetail);
+    }
 }

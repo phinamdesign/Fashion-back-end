@@ -24,27 +24,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min=3, max = 50)
+    @Size(max = 50)
     private String name;
 
     @NotBlank
-    @Size(min=3, max = 50)
+    @Size(max = 50)
     private String username;
 
-    @NaturalId
+    //    @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
 
-    private Long phone;
+    @NotBlank
+    private String phone;
 
     private String address;
 
     private String avatar;
 
     @NotBlank
-    @Size(min=6, max = 100)
+    @Size(max = 100)
     private String password;
 
     @OneToMany(targetEntity = Commenter.class)
@@ -56,13 +57,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String name, String username, String email, String password) {
+    public User(String name, String username, String email, String phone, String address, String password) {
+
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.phone = phone;
+        this.address = address;
     }
 
     public List<Commenter> getCommenters() {
@@ -121,11 +126,11 @@ public class User {
         this.roles = roles;
     }
 
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
