@@ -16,6 +16,8 @@ public class ProductDetail {
     @ManyToOne
     private Color color;
     @ManyToOne
+    private Payment payment;
+    @ManyToOne
     private Product product;
     @ManyToOne
     private Order order;
@@ -23,13 +25,14 @@ public class ProductDetail {
     public ProductDetail() {
     }
 
-    public ProductDetail(Long id, @NotNull long quantity, Size size, Color color, Product product, Order order) {
+    public ProductDetail(Long id, @NotNull long quantity, Size size, Color color, Product product, Order order, Payment payment) {
         this.id = id;
         this.quantity = quantity;
         this.size = size;
         this.color = color;
         this.product = product;
         this.order = order;
+        this.payment = payment;
     }
 
     public Order getOrder() {
@@ -86,5 +89,13 @@ public class ProductDetail {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

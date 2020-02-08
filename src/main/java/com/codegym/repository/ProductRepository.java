@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllBySupplier_SupplierId(Long Supplier_SupplierId);
 
     Iterable<Product> findProductsByNameContaining(String name);
+
+    Iterable<Product> findProductsByNameContainingOrderByDateDesc(String name);
 
 //    Iterable<Product> findAllByNameContaining(String name);
 //

@@ -54,4 +54,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findProductsByNameContaining(name);
     }
 
+    @Override
+    public Iterable<Product> findProductsByNameContainingOrderByDateDesc(String name) {
+        return productRepository.findProductsByNameContainingOrderByDateDesc(name);
+    }
+
 }

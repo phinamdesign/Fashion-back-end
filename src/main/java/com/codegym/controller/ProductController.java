@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +44,10 @@ public class ProductController {
     @PostMapping("/admin/product")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createProduct(@Valid @RequestBody Product product){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String date = now.format(format);
+        product.setDate(date);
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
@@ -66,6 +72,11 @@ public class ProductController {
         if (!product1.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String date = now.format(format);
+
+        product1.get().setDate(date);
         product1.get().setName(product.getName());
         product1.get().setPrice(product.getPrice());
         product1.get().setDescription(product.getDescription());
@@ -114,7 +125,7 @@ public class ProductController {
             }
             return new ResponseEntity<>(products,HttpStatus.OK);
         } else {
-            List<Product> products = (List<Product>) productService.findProductsByNameContaining(searchProductByName.getNameProduct());
+            List<Product> products = (List<Product>) productService.findProductsByNameContainingOrderByDateDesc(searchProductByName.getNameProduct());
             if(products.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

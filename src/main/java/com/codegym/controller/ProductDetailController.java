@@ -66,6 +66,7 @@ public class ProductDetailController {
         }
         currentProductDetail.get().setColor(productDetail.getColor());
         currentProductDetail.get().setSize(productDetail.getSize());
+        currentProductDetail.get().setPayment(productDetail.getPayment());
         currentProductDetail.get().setProduct(productDetail.getProduct());
         currentProductDetail.get().setQuantity(productDetail.getQuantity());
         productDetailService.saveProductDetail(currentProductDetail.get());

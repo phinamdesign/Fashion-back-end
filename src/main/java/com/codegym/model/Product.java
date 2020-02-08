@@ -15,7 +15,7 @@ public class Product {
     private Long price;
     private String description;
     private Long quantity;
-//    private Date dateCreate;
+    private String date;
 
     @OneToMany(targetEntity = Commenter.class)
     private List<Commenter> commenters;
@@ -38,7 +38,7 @@ public class Product {
     }
 
     public Product( String name, Long price, String description, Long quantity,
-                    Category category, Supplier supplier, List<Picture> pictures
+                    Category category, Supplier supplier, List<Picture> pictures, String date
     ) {
         this.name = name;
         this.price = price;
@@ -47,6 +47,8 @@ public class Product {
         this.category = category;
         this.supplier = supplier;
         this.pictures = pictures;
+        this.date = date;
+
     }
 
     public List<Commenter> getCommenters() {
@@ -120,4 +122,13 @@ public class Product {
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 }

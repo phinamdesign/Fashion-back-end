@@ -22,4 +22,6 @@ public interface ProductService {
     List<Product> findAllBySupplier_SupplierId(Long Supplier_SupplierId);
 
     Iterable<Product> findProductsByNameContaining(String name);
+
+    Iterable<Product> findProductsByNameContainingOrderByDateDesc(String name);
 }
