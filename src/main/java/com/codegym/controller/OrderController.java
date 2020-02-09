@@ -71,7 +71,6 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         oder1.get().setDate(order.getDate());
-        oder1.get().setPayment(order.getPayment());
         oder1.get().setDeliveryAddress(order.getDeliveryAddress());
 
         orderService.save(oder1.get());

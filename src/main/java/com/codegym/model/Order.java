@@ -1,7 +1,6 @@
 package com.codegym.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -13,9 +12,6 @@ public class Order {
     private Long id;
     private Date date;
     private Long total;
-    @OneToOne
-    @JoinColumn(name = "paymentid")
-    private Payment payment;
     private String deliveryAddress;
     @OneToMany
     private List<ProductDetail>productDetails;
@@ -28,7 +24,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Date date, Long total, String deliveryAddress, List<ProductDetail> productDetails, User user, String phone,Payment payment, Status status) {
+    public Order(Long id, Date date, Long total, String deliveryAddress, List<ProductDetail> productDetails, User user, String phone, Status status) {
         this.id = id;
         this.date = date;
         this.total = total;
@@ -36,7 +32,6 @@ public class Order {
         this.productDetails = productDetails;
         this.user = user;
         this.phone = phone;
-        this.payment = payment;
         this.status = status;
     }
 
@@ -94,14 +89,6 @@ public class Order {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
     }
 
     public Status getStatus() {
