@@ -27,7 +27,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Date date, Long total, String deliveryAddress, List<ProductDetail> productDetails, User user, String phone, Status status) {
+    public Order(Long id, Date date, Long total, String deliveryAddress, List<ProductDetail> productDetails, User user,Payment payment, String phone, Status status) {
         this.id = id;
         this.date = date;
         this.total = total;
