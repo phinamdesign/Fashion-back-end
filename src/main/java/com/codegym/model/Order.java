@@ -21,6 +21,8 @@ public class Order {
 
     private String phone;
     private Status status;
+    @ManyToOne
+    private Payment payment;
 
     public Order() {
     }
@@ -98,5 +100,13 @@ public class Order {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }
